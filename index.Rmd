@@ -1,0 +1,91 @@
+---
+title       : RGB Color Thresholding
+subtitle    : 
+author      : medtraf
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Slide 1 
+Image Thresholding By Channel
+
+
+--- 
+
+
+
+## Slide 2
+
+The rubics cube with distinctly colored pieces are represented by pixels that are functions of Red, Green and Blue channels. 
+
+
+https://medtraf.shinyapps.io/Products
+
+This leaning tool allows user to look at the effect of thresholding by color channel.
+
+
+--- 
+
+
+
+
+
+## Slide 3
+```{r,eval=FALSE}
+ shinyUI(pageWithSidebar(
+  headerPanel("Thresholding by Color Channel"),
+  sidebarPanel(
+    sliderInput('hp', 'Threshold',value = .01, min = 0, max = 1, step = 0.01),
+    sliderInput('ch', 'Channel',value = 1, min = 1, max = 3, step =1)
+  ),
+  mainPanel(
+    img(src='cube.jpg', align = "left"),
+    plotOutput('myHist')
+  )
+))
+
+
+```
+
+
+--- 
+
+
+
+## Slide 4
+Test
+```{r,eval=FALSE}
+library(UsingR)
+data(galton)
+data(mtcars)
+library(jpeg)
+library(raster)
+shinyServer(
+  function(input, output) {
+      output$myHist <- 
+      renderPlot({
+      hp <- input$hp
+      ch<-input$ch
+      generatePlot <- function (data, plotName,f) {
+        below = which(data<f) 
+        data[below] <- NA
+        rv1 <- raster(data)
+        plotData <- spplot(rv1, scales = list(draw = TRUE), col.regions=heat.colors(1, alpha=1), main=plotName)
+        return(plotData)
+      }
+      m=readJPEG('cube.jpg', native = FALSE)[,,ch]
+      plotData = generatePlot(m,'Thesholded Rubics Cube',hp)
+      print(plotData)
+    }
+    )
+  }
+)
+```
+
+--- 
+

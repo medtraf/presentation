@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+bundleId:
+        https://api.rpubs.com/api/v1/document/113765/b39aed7f5db24e82bec6a8e1b21f0dd4
+url: http://rpubs.com/medtraf/113765
+when: 1443385941.13087

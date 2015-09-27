@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RGB Color Thresholding</title>
+  <meta charset="utf-8">
+  <meta name="description" content="RGB Color Thresholding">
+  <meta name="author" content="medtraf">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>RGB Color Thresholding</h1>
+    <h2></h2>
+    <p>medtraf<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Slide 1</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Image Thresholding By Channel</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Slide 2</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The rubics cube with distinctly colored pieces are represented by pixels that are functions of Red, Green and Blue channels. </p>
+
+<p><a href="https://medtraf.shinyapps.io/Products">https://medtraf.shinyapps.io/Products</a></p>
+
+<p>This leaning tool allows user to look at the effect of thresholding by color channel.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Slide 3</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"> shinyUI(pageWithSidebar(
+  headerPanel(&quot;Thresholding by Color Channel&quot;),
+  sidebarPanel(
+    sliderInput(&#39;hp&#39;, &#39;Threshold&#39;,value = .01, min = 0, max = 1, step = 0.01),
+    sliderInput(&#39;ch&#39;, &#39;Channel&#39;,value = 1, min = 1, max = 3, step =1)
+  ),
+  mainPanel(
+    img(src=&#39;cube.jpg&#39;, align = &quot;left&quot;),
+    plotOutput(&#39;myHist&#39;)
+  )
+))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Slide 4</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Test</p>
+
+<pre><code class="r">library(UsingR)
+data(galton)
+data(mtcars)
+library(jpeg)
+library(raster)
+shinyServer(
+  function(input, output) {
+      output$myHist &lt;- 
+      renderPlot({
+      hp &lt;- input$hp
+      ch&lt;-input$ch
+      generatePlot &lt;- function (data, plotName,f) {
+        below = which(data&lt;f) 
+        data[below] &lt;- NA
+        rv1 &lt;- raster(data)
+        plotData &lt;- spplot(rv1, scales = list(draw = TRUE), col.regions=heat.colors(1, alpha=1), main=plotName)
+        return(plotData)
+      }
+      m=readJPEG(&#39;cube.jpg&#39;, native = FALSE)[,,ch]
+      plotData = generatePlot(m,&#39;Thesholded Rubics Cube&#39;,hp)
+      print(plotData)
+    }
+    )
+  }
+)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <article data-timings="">
+    
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Slide 1'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Slide 2'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Slide 3'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Slide 4'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='NA'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
